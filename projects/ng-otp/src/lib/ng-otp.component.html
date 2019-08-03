@@ -1,0 +1,5 @@
+<div>
+  <input type="tel" class="example-input" maxlength="1" id="otp-{{i}}"
+          *ngFor="let control of limitArray; let i = index"
+          (keyup)="changeFocus$.next(i)" (focusin)="onFocus(i)">
+</div>
