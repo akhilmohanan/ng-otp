@@ -1,9 +1,8 @@
-import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgOtpService } from './ng-otp.service';
 import { Subject, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { EventEmitter } from 'events';
 
 @Component({
   selector: 'ng-otp',
@@ -13,7 +12,7 @@ import { EventEmitter } from 'events';
 export class NgOtpComponent implements OnDestroy {
 
   @Input() limit = 4;
-  @Output() otp = new EventEmitter();
+  @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
   limitArray = [];
@@ -51,7 +50,7 @@ export class NgOtpComponent implements OnDestroy {
     } else if (!this.ngOtpService.isEmptySting(currentElement.value)) {
       this.moveForward(id);
     }
-    this.otp.emit(Object.values(this.otpForm.value).join());
+    this.otpOut.emit(Object.values(this.otpForm.value).join(''));
   }
 
   moveForward(id: number) {
