@@ -1,24 +1,55 @@
-# NgOtp
+# Angular Otp Verification
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
+One Time Password verification input component for Angular 7+.
 
-## Code scaffolding
 
-Run `ng generate component component-name --project ng-otp` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-otp`.
-> Note: Don't forget to add `--project ng-otp` or else it will be added to the default project in your `angular.json` file. 
+[Online demo](https://akhilmohanan.github.io/angular-otpVerification/) is here.
 
-## Build
 
-Run `ng build ng-otp` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installation and usage
 
-## Publishing
+To install this component to an external project, follow the procedure:
 
-After building your library with `ng build ng-otp`, go to the dist folder `cd dist/ng-otp` and run `npm publish`.
+ 1. **npm install ng-otp**
+ 2. Add **NgOtpModule** import to your **@NgModule** like example below
+    ```javascript
+      import { BrowserModule } from '@angular/platform-browser';
+      import { NgModule } from '@angular/core';
+      import { AppComponent } from './app.component';
+      import { NgOtpModule } from 'ng-otp';
 
-## Running unit tests
+      @NgModule({
+        declarations: [
+          AppComponent
+        ],
+        imports: [
+          BrowserModule,
+          NgOtpModule
+        ],
+        providers: [],
+        bootstrap: [AppComponent]
+      })
+      export class AppModule { }
 
-Run `ng test ng-otp` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    ```
+  3. Add **ng-otp** selector to template
+      ```html
+      <ng-otp [limit]="4" (otpOut)="setOtp($event)"></ng-otp>
+      ```
 
-## Further help
+## Attributes
+### options attribute
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Option | Default | Type | Description
+------ | ------- | ---- | -----------
+limit | 4 | number | Enter the number of inputs in the OTP screen. By default limit is set to four.
+
+## Callbacks
+### otpOut
+  * Called for every keyup,
+  * Output format is in string
+  ```javascript
+  setOtp(otp: string) {
+    console.log('the opt is ', otp);
+  }
+  ```
