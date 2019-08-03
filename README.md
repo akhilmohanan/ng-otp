@@ -1,27 +1,55 @@
-# AngularOtp
+# Angular Otp Verification
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
+One Time Password verification input component for Angular 7+.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+[Online demo](https://akhilmohanan.github.io/angular-otpVerification/) is here.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation and usage
 
-## Build
+To install this component to an external project, follow the procedure:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+ 1. **npm install ng-otp**
+ 2. Add **NgOtpModule** import to your **@NgModule** like example below
+    ```javascript
+      import { BrowserModule } from '@angular/platform-browser';
+      import { NgModule } from '@angular/core';
+      import { AppComponent } from './app.component';
+      import { NgOtpModule } from 'ng-otp';
 
-## Running unit tests
+      @NgModule({
+        declarations: [
+          AppComponent
+        ],
+        imports: [
+          BrowserModule,
+          NgOtpModule
+        ],
+        providers: [],
+        bootstrap: [AppComponent]
+      })
+      export class AppModule { }
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    ```
+  3. Add **ng-otp** selector to template
+      ```html
+      <ng-otp [limit]="4" (otpOut)="setOtp($event)"></ng-otp>
+      ```
 
-## Running end-to-end tests
+## Attributes
+### options attribute
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Option | Default | Type | Description
+------ | ------- | ---- | -----------
+limit | 4 | number | Enter the number of inputs in the OTP screen. By default limit is set to four.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Callbacks
+### otpOut
+  * Called for every keyup,
+  * Output format is in string
+  ```javascript
+  setOtp(otp: string) {
+    console.log('the opt is ', otp);
+  }
+  ```
