@@ -3,7 +3,7 @@
 One Time Password verification input component for Angular 7+.
 
 
-[Online demo](https://akhilmohanan.github.io/angular-otpVerification/) is here.
+[Online demo](https://akhilmohanan.github.io/ng-otp/) is here.
 
 
 ## Installation and usage
