@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgOtpService } from './ng-otp.service';
 import { Subject, Subscription } from 'rxjs';
@@ -12,10 +12,12 @@ import { throttleTime } from 'rxjs/operators';
 export class NgOtpComponent implements OnInit, OnDestroy {
 
   @Input() limit: number;
+  @Input() acceptableCharacters: string;
   @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
   limitArray = [];
+  isKeyAcceptable = true;
   changeFocus$ = new Subject();
   subscription = new Subscription();
 
@@ -46,6 +48,10 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   }
 
   changeFocus(id: number) {
+    if (!this.isKeyAcceptable) {
+      this.isKeyAcceptable = true;
+      return;
+    }
     const currentElement: HTMLInputElement = this.ngOtpService.getElement(id);
     if (id && this.ngOtpService.isEmptySting(currentElement.value)) {
       this.moveBackward(id);
@@ -74,6 +80,15 @@ export class NgOtpComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onKeyDown(event) {
+    if (event.key) {
+      if (this.acceptableCharacters && !this.acceptableCharacters.includes(event.key)) {
+        this.isKeyAcceptable = false;
+        event.preventDefault();
+      }
+    }
   }
 
 }

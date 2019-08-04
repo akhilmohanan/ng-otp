@@ -1,6 +1,6 @@
 <div [formGroup]="otpForm" class="otp-wrap">
   <input type="tel" class="otp-input" maxlength="1" id="otp-{{i}}"
           *ngFor="let control of limitArray; let i = index" placeholder="-"
-          (keyup)="changeFocus$.next(i)" (focusin)="onFocus(i)"
+          (keyup)="changeFocus$.next(i)" (keydown)="onKeyDown($event)" (focusin)="onFocus(i)"
           formControlName="otp-{{i}}">
 </div>
