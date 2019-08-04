@@ -34,7 +34,7 @@ To install this component to an external project, follow the procedure:
     ```
   3. Add **ng-otp** selector to template
       ```html
-      <ng-otp [limit]="4" (otpOut)="setOtp($event)"></ng-otp>
+      <ng-otp [limit]="4" [acceptableCharacters]="characters" (otpOut)="setOtp($event)"></ng-otp>
       ```
 
 ## Attributes
@@ -43,12 +43,14 @@ To install this component to an external project, follow the procedure:
 Option | Default | Type | Description
 ------ | ------- | ---- | -----------
 limit | 4 | number | Enter the number of inputs in the OTP screen. By default limit is set to four.
+acceptableCharacters | '' | string | You can give a sting of characters you want, It's only allows these characters in input. By default it accpect all characters
 
 ## Callbacks
 ### otpOut
   * Called for every keyup,
   * Output format is in string
   ```javascript
+  characters = 'abcdefghijklmnopqrstuvwxyz';
   setOtp(otp: string) {
     console.log('the opt is ', otp);
   }
