@@ -1,6 +1,6 @@
 {
-  "name": "angular-otp",
-  "version": "0.0.0",
+  "name": "ng-otp",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~7.2.0",
     "@angular/common": "~7.2.0",
@@ -48,5 +48,24 @@
     "tslib": "^1.9.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"
-  }
+  },
+  "description": "One Time Password verification input component for Angular 7+.",
+  "main": "ng-otp.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akhilmohanan/ng-otp.git"
+  },
+  "keywords": [
+    "angular",
+    "otp",
+    "otp-verification",
+    "otp-input",
+    "input"
+  ],
+  "author": "Akhil M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akhilmohanan/ng-otp/issues"
+  },
+  "homepage": "https://github.com/akhilmohanan/ng-otp#readme"
 }
