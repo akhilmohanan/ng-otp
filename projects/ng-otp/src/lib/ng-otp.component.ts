@@ -83,7 +83,7 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   }
 
   onKeyDown(event) {
-    if (event.key) {
+    if (event.key && (event.key !== 'Backspace' && event.key !== 'Delete')) {
       if (this.acceptableCharacters && !this.acceptableCharacters.includes(event.key)) {
         this.isKeyAcceptable = false;
         event.preventDefault();
