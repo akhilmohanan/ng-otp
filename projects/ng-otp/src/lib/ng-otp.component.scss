@@ -1,3 +1,20 @@
-.example-input::selection {
-  background: #ffffff;
+.otp-input {
+  width: 50px;
+  height: 45px;
+  background: 0 0;
+  border: none;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 600;
+  outline: 0;
 }
+
+.otp-input::selection {
+  background: #f0f9ff;
+}
+
+.otp-wrap {
+  border-bottom: 2px solid #d7d7d7;
+  max-width: max-content;
+}
+
