@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgOtpService } from './ng-otp.service';
 import { Subject, Subscription } from 'rxjs';
@@ -9,9 +9,9 @@ import { throttleTime } from 'rxjs/operators';
   templateUrl: './ng-otp.component.html',
   styleUrls: ['./ng-otp.component.scss']
 })
-export class NgOtpComponent implements OnDestroy {
+export class NgOtpComponent implements OnInit, OnDestroy {
 
-  @Input() limit = 4;
+  @Input() limit: number;
   @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
@@ -23,7 +23,6 @@ export class NgOtpComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private ngOtpService: NgOtpService
   ) {
-    this.setFormBuilder();
     this.subscription.add(this.changeFocus$
       .pipe(
         throttleTime(100)
@@ -31,6 +30,11 @@ export class NgOtpComponent implements OnDestroy {
         (index: number) => { this.changeFocus(index); }
       )
     );
+  }
+
+  ngOnInit() {
+    this.limit = this.limit ? this.limit : 4;
+    this.setFormBuilder();
   }
 
   setFormBuilder() {
