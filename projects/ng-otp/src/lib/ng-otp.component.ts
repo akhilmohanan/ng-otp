@@ -1,22 +1,23 @@
-import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { Component, Input, OnDestroy, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgOtpService } from './ng-otp.service';
 import { Subject, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { EventEmitter } from 'events';
 
 @Component({
   selector: 'ng-otp',
   templateUrl: './ng-otp.component.html',
   styleUrls: ['./ng-otp.component.scss']
 })
-export class NgOtpComponent implements OnDestroy {
+export class NgOtpComponent implements OnInit, OnDestroy {
 
-  @Input() limit = 4;
-  @Output() otp = new EventEmitter();
+  @Input() limit: number;
+  @Input() acceptableCharacters: string;
+  @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
   limitArray = [];
+  isKeyAcceptable = true;
   changeFocus$ = new Subject();
   subscription = new Subscription();
 
@@ -24,7 +25,6 @@ export class NgOtpComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private ngOtpService: NgOtpService
   ) {
-    this.setFormBuilder();
     this.subscription.add(this.changeFocus$
       .pipe(
         throttleTime(100)
@@ -32,6 +32,11 @@ export class NgOtpComponent implements OnDestroy {
         (index: number) => { this.changeFocus(index); }
       )
     );
+  }
+
+  ngOnInit() {
+    this.limit = this.limit ? this.limit : 4;
+    this.setFormBuilder();
   }
 
   setFormBuilder() {
@@ -43,6 +48,10 @@ export class NgOtpComponent implements OnDestroy {
   }
 
   changeFocus(id: number) {
+    if (!this.isKeyAcceptable) {
+      this.isKeyAcceptable = true;
+      return;
+    }
     const currentElement: HTMLInputElement = this.ngOtpService.getElement(id);
     if (id && this.ngOtpService.isEmptySting(currentElement.value)) {
       this.moveBackward(id);
@@ -51,7 +60,7 @@ export class NgOtpComponent implements OnDestroy {
     } else if (!this.ngOtpService.isEmptySting(currentElement.value)) {
       this.moveForward(id);
     }
-    this.otp.emit(Object.values(this.otpForm.value).join());
+    this.otpOut.emit(Object.values(this.otpForm.value).join(''));
   }
 
   moveForward(id: number) {
@@ -71,6 +80,15 @@ export class NgOtpComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onKeyDown(event) {
+    if (event.key) {
+      if (this.acceptableCharacters && !this.acceptableCharacters.includes(event.key)) {
+        this.isKeyAcceptable = false;
+        event.preventDefault();
+      }
+    }
   }
 
 }

@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-otp';
+
+  otp: string;
+  characters = 'abcdefghijklmnopqrstuvwxyz';
+
+  setOtp(otp: string) {
+    this.otp = otp;
+  }
+
 }

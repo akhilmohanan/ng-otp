@@ -1,3 +1,4 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<ng-otp></ng-otp>
+<ng-otp [limit]="4" [acceptableCharacters]="characters" (otpOut)="setOtp($event)"></ng-otp>
 
+<p> The opt is: <b>{{this.otp}}</b> </p>
