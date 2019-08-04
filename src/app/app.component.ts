@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   otp: string;
+  characters = 'abcdefghijklmnopqrstuvwxyz';
 
   setOtp(otp: string) {
     this.otp = otp;
