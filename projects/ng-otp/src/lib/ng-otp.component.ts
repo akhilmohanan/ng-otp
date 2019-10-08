@@ -11,15 +11,39 @@ import { throttleTime } from 'rxjs/operators';
 })
 export class NgOtpComponent implements OnInit, OnDestroy {
 
+  private _allowedCharacters: string | RegExp = /./;
+  private _typeOfInput: 'text' | 'number' | 'password' = 'text';
+  keyboardType: 'numeric' | 'text' = 'text';
+
   @Input() limit: number;
-  @Input() acceptableCharacters: string;
+  @Input() set allowedCharacters(el: string | RegExp) {
+    if (el) {
+      this._allowedCharacters = el;
+    } else {
+      this.throwErrorForUndefinedElement(el);
+    }
+  }
+
+  @Input() set typeOfInput(type: 'text' | 'number' | 'password') {
+    if (type) {
+      this._typeOfInput = type;
+      this.keyboardType = type === 'password' ? 'numeric' : 'text';
+    } else {
+      this.throwErrorForUndefinedElement(type);
+    }
+  }
+
+  get typeOfInput(): 'text' | 'number' | 'password' {
+    return this._typeOfInput;
+  }
+
   @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
-  limitArray = [];
-  isKeyAcceptable = true;
+  private limitArray = [];
+  private isKeyAcceptable = true;
   changeFocus$ = new Subject();
-  subscription = new Subscription();
+  private subscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,7 +51,7 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   ) {
     this.subscription.add(this.changeFocus$
       .pipe(
-        throttleTime(100)
+        throttleTime(50)
       ).subscribe(
         (index: number) => { this.changeFocus(index); }
       )
@@ -57,18 +81,18 @@ export class NgOtpComponent implements OnInit, OnDestroy {
       this.moveBackward(id);
     } else if (this.ngOtpService.isLastInput(id, this.limit - 1)) {
       currentElement.select();
+      this.otpOut.emit(Object.values(this.otpForm.value).join(''));
     } else if (!this.ngOtpService.isEmptySting(currentElement.value)) {
       this.moveForward(id);
     }
-    this.otpOut.emit(Object.values(this.otpForm.value).join(''));
   }
 
-  moveForward(id: number) {
+  private moveForward(id: number) {
     const nextElement: HTMLInputElement = this.ngOtpService.getElement(id + 1);
     nextElement.focus();
   }
 
-  moveBackward(id: number) {
+  private moveBackward(id: number) {
     const nextElement: HTMLInputElement = this.ngOtpService.getElement(id - 1);
     nextElement.focus();
   }
@@ -82,13 +106,23 @@ export class NgOtpComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onKeyDown(event) {
+  onKeyDown(event: KeyboardEvent) {
     if (event.key && (event.key !== 'Backspace' && event.key !== 'Delete')) {
-      if (this.acceptableCharacters && !this.acceptableCharacters.includes(event.key)) {
-        this.isKeyAcceptable = false;
-        event.preventDefault();
+      if (this._allowedCharacters) {
+        if (this._allowedCharacters instanceof RegExp) {
+          this.isKeyAcceptable = this._allowedCharacters.test(event.key);
+        } else {
+          if (!this._allowedCharacters.includes(event.key)) {
+            this.isKeyAcceptable = false;
+            event.preventDefault();
+          }
+        }
       }
     }
+  }
+
+  private throwErrorForUndefinedElement<T>(element: T) {
+    throw new Error(`Is not possibile set ${element} to this parameter`);
   }
 
 }
