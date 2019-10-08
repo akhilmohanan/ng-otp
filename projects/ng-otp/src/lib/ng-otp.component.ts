@@ -72,6 +72,7 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   }
 
   changeFocus(id: number) {
+    console.log(this.isKeyAcceptable);
     if (!this.isKeyAcceptable) {
       this.isKeyAcceptable = true;
       return;
@@ -110,7 +111,10 @@ export class NgOtpComponent implements OnInit, OnDestroy {
     if (event.key && (event.key !== 'Backspace' && event.key !== 'Delete')) {
       if (this._allowedCharacters) {
         if (this._allowedCharacters instanceof RegExp) {
-          this.isKeyAcceptable = this._allowedCharacters.test(event.key);
+          if (!this._allowedCharacters.test(event.key)) {
+            this.isKeyAcceptable = false;
+            event.preventDefault();
+          }
         } else {
           if (!this._allowedCharacters.includes(event.key)) {
             this.isKeyAcceptable = false;
