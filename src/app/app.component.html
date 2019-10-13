@@ -1,4 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<ng-otp [limit]="4" [acceptableCharacters]="characters" (otpOut)="setOtp($event)"></ng-otp>
+<ng-otp
+    [limit]="4"
+    [allowedCharacters]="characters"
+    (otpOut)="setOtp($event)"
+    typeOfInput="password"
+></ng-otp>
 
 <p> The opt is: <b>{{this.otp}}</b> </p>
