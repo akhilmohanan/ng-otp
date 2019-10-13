@@ -27,7 +27,7 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   @Input() set typeOfInput(type: 'text' | 'number' | 'password') {
     if (type) {
       this._typeOfInput = type;
-      this.keyboardType = type === 'password' ? 'numeric' : 'text';
+      this.keyboardType = type === 'number' ? 'numeric' : 'text';
     } else {
       this.throwErrorForUndefinedElement(type);
     }
@@ -72,7 +72,6 @@ export class NgOtpComponent implements OnInit, OnDestroy {
   }
 
   changeFocus(id: number) {
-    console.log(this.isKeyAcceptable);
     if (!this.isKeyAcceptable) {
       this.isKeyAcceptable = true;
       return;
