@@ -4,6 +4,9 @@ import { NgOtpService } from './ng-otp.service';
 import { Subject, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 
+type InputType = 'text' | 'number' | 'password';
+type KeyboardType = 'numeric' | 'text';
+
 @Component({
   selector: 'ng-otp',
   templateUrl: './ng-otp.component.html',
@@ -12,9 +15,9 @@ import { throttleTime } from 'rxjs/operators';
 export class NgOtpComponent implements OnInit, OnDestroy {
 
   private _allowedCharacters: string | RegExp = /./;
-  private _typeOfInput: 'text' | 'number' | 'password' = 'text';
-  keyboardType: 'numeric' | 'text' = 'text';
+  private _typeOfInput: InputType = 'text';
 
+  @Input() keyboardType: KeyboardType = 'text';
   @Input() limit: number;
   @Input() set allowedCharacters(el: string | RegExp) {
     if (el) {
@@ -24,23 +27,22 @@ export class NgOtpComponent implements OnInit, OnDestroy {
     }
   }
 
-  @Input() set typeOfInput(type: 'text' | 'number' | 'password') {
+  @Input() set typeOfInput(type: InputType) {
     if (type) {
       this._typeOfInput = type;
-      this.keyboardType = type === 'number' ? 'numeric' : 'text';
     } else {
       this.throwErrorForUndefinedElement(type);
     }
   }
 
-  get typeOfInput(): 'text' | 'number' | 'password' {
+  get typeOfInput(): InputType {
     return this._typeOfInput;
   }
 
   @Output() otpOut = new EventEmitter();
 
   otpForm: FormGroup;
-  private limitArray = [];
+  limitArray = [];
   private isKeyAcceptable = true;
   changeFocus$ = new Subject();
   private subscription = new Subscription();
