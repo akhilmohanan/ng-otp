@@ -45,7 +45,10 @@ Option            | Default | Type                       | Description
 ----------------- | ------- | -------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 limit             | 4       | number                     | Enter the number of inputs in the OTP screen. By default limit is set to four.
 allowedCharacters | /./     | string or RegExp           | You can give a string of characters you want. It's only allows these characters in input. It also accept a `Regex` to be able to test single character of input. By default it accpect all characters
-typeOfInput       | text    | `text` `password` `number` | Use native HTML input properties for selected type (like hided text in case of password and so on)
+typeOfInput       | `text`  | `text` `password` `number` | Use native HTML input properties for selected type (like hided text in case of password and so on)
+keyboardType      | `text`  | `text` `numeric`           | Use this attribute to change keyboard type even if `typeOfInput` is a different one
+
+`keyboardType` and `typeOfInput` **can be** a different type (e.g one password and one numeric)
 
 ## Callbacks
 
