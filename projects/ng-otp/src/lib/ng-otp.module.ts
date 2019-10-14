@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { NgOtpComponent } from './ng-otp.component';
 
-import {ReactiveFormsModule} from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [NgOtpComponent],
   imports: [
-    BrowserModule,
+    CommonModule,
     ReactiveFormsModule
   ],
   exports: [NgOtpComponent]
